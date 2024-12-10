@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .changeTurn {
+    cursor: pointer;
+    transition: transform 0.5s ease;
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+
+  .chessContainer {
+    width: 600px;
+    height: 600px;
+    border: 20px solid #dfc9a6;
+    border-right-color: rgb(172, 157, 135);
+    border-bottom-color: rgb(172, 157, 135);
+    border-radius: 5px;
+  }
+}

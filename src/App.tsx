@@ -1,5 +1,6 @@
-import React from "react";
+import ChessPage from "./pages/ChessPage";
+import "./reset.css";
 
 export default function App() {
-  return <div className="App"></div>;
+  return <ChessPage />;
 }

@@ -1,0 +1,21 @@
+.container {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0d9b5;
+  border: 5px solid #f3e5cf;
+  border-right-color: rgb(197, 182, 160);
+  border-bottom-color: rgb(197, 182, 160);
+  color: #424242;
+  font-weight: 700;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: #e2cba7;
+  }
+}
