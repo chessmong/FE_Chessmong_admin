@@ -1,9 +1,10 @@
 import styles from "./Button.module.scss";
+import { ButtonProps } from "./Button.types";
 
-interface ButtonProps {
-  text: string;
-}
-
-export default function Button({ text }: ButtonProps) {
-  return <div className={styles.container}>{text}</div>;
+export default function Button({ children, onClick }: ButtonProps) {
+  return (
+    <div className={styles.container} onClick={onClick}>
+      {children}
+    </div>
+  );
 }
