@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { chessState } from "../../states/chessState";
+import { positionsState } from "../../states/positionsState";
 import Chessground from "@react-chess/chessground";
-import styles from "./ChessBoard.module.scss";
 import "../../assets/chessground.base.css";
 import "../../assets/chessground.brown.css";
 import "../../assets/chessground.cburnett.css";
 import turnicon from "../../assets/icons/turn-icon.svg";
 import { Chess, SQUARES, Square } from "chess.js";
 import { Key } from "chessground/types";
-import { useRecoilState } from "recoil";
-import { chessState } from "../../states/chessState";
 import Button from "../Button";
 import { ChessBoardProps } from "./ChessBoard.types";
+import styles from "./ChessBoard.module.scss";
 
-export default function ChessBoard({ onSavePosition }: ChessBoardProps) {
+export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardProps) {
   const [chess, setChess] = useRecoilState(chessState);
   const [turnColor, setTurnColor] = useState<"white" | "black">("white");
   const [isRotated, setIsRotated] = useState(false);
   const [history, setHistory] = useState<string[]>([chess.fen()]);
+  const positions = useRecoilValue(positionsState);
+
+  useEffect(() => {
+    onFenChange(chess.fen());
+  }, [chess.fen(), onFenChange]);
 
   const changeTurn = () => {
     setTurnColor(turnColor === "white" ? "black" : "white");
@@ -24,7 +30,18 @@ export default function ChessBoard({ onSavePosition }: ChessBoardProps) {
   };
 
   const savePosition = () => {
-    onSavePosition(chess.fen());
+    const currentFen = chess.fen();
+
+    if (positions.length === 0) {
+      onSavePosition(currentFen);
+      return;
+    }
+
+    if (!positions.includes(currentFen)) {
+      onSavePosition(currentFen);
+    } else {
+      alert("이미 저장된 상태입니다!");
+    }
   };
 
   const undoMove = () => {

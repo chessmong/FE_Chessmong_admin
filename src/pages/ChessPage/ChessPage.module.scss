@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 150px;
+    gap: 100px;
 
     .leftSection {
       display: flex;
@@ -29,10 +29,60 @@
     }
   }
 
-  .positionContainer {
-    width: 400px;
+  .positionBg {
+    width: 450px;
     height: 600px;
     background-color: #b5aa99;
     border-radius: 5px;
+    padding: 20px 10px 20px 20px;
+
+    .positionContainer {
+      width: 100%;
+      height: 100%;
+      padding-right: 10px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #8b8070;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #8b8070;
+      }
+
+      .positionItem {
+        height: fit-content;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+      }
+
+      .highlighted {
+        color: #ff9900;
+      }
+
+      .positionText {
+        font-size: 14px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+      }
+    }
   }
 }
