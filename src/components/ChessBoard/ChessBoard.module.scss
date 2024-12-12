@@ -1,7 +1,13 @@
 .container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+
+  .topContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
   .changeTurn {
     cursor: pointer;
@@ -19,5 +25,22 @@
     border-right-color: rgb(172, 157, 135);
     border-bottom-color: rgb(172, 157, 135);
     border-radius: 5px;
+  }
+}
+
+.buttons {
+  display: flex;
+  gap: 30px;
+
+  .button {
+    margin-top: 50px;
+    margin-left: 70px;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+
+  .rightButton {
+    margin-top: 50px;
   }
 }
