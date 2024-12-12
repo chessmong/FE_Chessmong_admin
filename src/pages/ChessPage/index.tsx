@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useRecoilState } from "recoil";
 import styles from "./ChessPage.module.scss";
 import ChessBoard from "../../components/ChessBoard";
+import { positionsState } from "../../states/positionsState";
 
 export default function ChessPage() {
-  const [savedPositions, setSavedPositions] = useState<string[]>([]);
+  const [savedPositions, setSavedPositions] = useRecoilState(positionsState);
 
   const savePosition = (position: string) => {
-    setSavedPositions((prev) => [...prev, position]);
+    setSavedPositions((prev) => [position, ...prev]);
   };
 
   return (
