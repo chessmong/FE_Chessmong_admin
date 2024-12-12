@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Chessground from "@react-chess/chessground";
 import styles from "./ChessBoard.module.scss";
 import "../../assets/chessground.base.css";
@@ -85,6 +85,24 @@ export default function ChessBoard({ onSavePosition }: ChessBoardProps) {
       showGhost: true,
     },
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === "s") {
+        event.preventDefault();
+        savePosition();
+      } else if (event.ctrlKey && event.key === "z") {
+        event.preventDefault();
+        undoMove();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [history, chess.fen()]);
 
   return (
     <div className={styles.container}>
