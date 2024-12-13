@@ -9,15 +9,6 @@
     gap: 10px;
   }
 
-  .changeTurn {
-    cursor: pointer;
-    transition: transform 0.5s ease;
-
-    &.rotated {
-      transform: rotate(180deg);
-    }
-  }
-
   .chessContainer {
     width: 600px;
     height: 600px;
@@ -31,16 +22,5 @@
 .buttons {
   display: flex;
   gap: 30px;
-
-  .button {
-    margin-top: 50px;
-    margin-left: 70px;
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-  }
-
-  .rightButton {
-    margin-top: 50px;
-  }
+  margin-top: 30px;
 }

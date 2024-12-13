@@ -1,0 +1,14 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  @media (max-width: 1024px) {
+    padding: 40px 15px;
+    height: fit-content;
+  }
+}

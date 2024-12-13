@@ -6,7 +6,6 @@ import Chessground from "@react-chess/chessground";
 import "../../assets/chessground.base.css";
 import "../../assets/chessground.brown.css";
 import "../../assets/chessground.cburnett.css";
-import turnicon from "../../assets/icons/turn-icon.svg";
 import { Chess, SQUARES, Square } from "chess.js";
 import { Key } from "chessground/types";
 import Button from "../Button";
@@ -16,7 +15,6 @@ import styles from "./ChessBoard.module.scss";
 export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardProps) {
   const [chess, setChess] = useRecoilState(chessState);
   const [turnColor, setTurnColor] = useState<"white" | "black">("white");
-  const [isRotated, setIsRotated] = useState(false);
   const [history, setHistory] = useState<string[]>([chess.fen()]);
   const positions = useRecoilValue(positionsState);
 
@@ -26,7 +24,6 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
 
   const changeTurn = () => {
     setTurnColor(turnColor === "white" ? "black" : "white");
-    setIsRotated((prev) => !prev);
   };
 
   const savePosition = () => {
@@ -123,26 +120,15 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
 
   return (
     <div className={styles.container}>
-      <div className={styles.topContainer}>
-        <div
-          className={`${styles.changeTurn} ${isRotated && styles.rotated}`}
-          onClick={changeTurn}
-          role="button"
-          tabIndex={0}
-        >
-          <img src={turnicon} alt="흑백전환" width={60} height={60} />
-        </div>
-        <div className={styles.chessContainer}>
-          <Chessground key={chess.fen()} config={config} contained={true} />
-        </div>
+      <div className={styles.chessContainer}>
+        <Chessground key={chess.fen()} config={config} contained={true} />
       </div>
       <div className={styles.buttons}>
-        <div className={styles.button}>
-          <Button onClick={savePosition}>상태저장</Button>
+        <div onClick={changeTurn} role="button" tabIndex={0}>
+          <Button onClick={undoMove}>흑백전환</Button>
         </div>
-        <div className={styles.rightButton}>
-          <Button onClick={undoMove}>되돌리기</Button>
-        </div>
+        <Button onClick={savePosition}>상태저장</Button>
+        <Button onClick={undoMove}>되돌리기</Button>
       </div>
     </div>
   );
