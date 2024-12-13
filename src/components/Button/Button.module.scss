@@ -18,4 +18,12 @@
   &:hover {
     background-color: #e2cba7;
   }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  &.disabled:hover {
+    background-color: #f0d9b5;
+  }
 }
