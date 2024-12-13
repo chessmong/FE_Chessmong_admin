@@ -6,6 +6,10 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   const handleInputClick = () => {
     navigate("/input");
   };
@@ -14,13 +18,20 @@ export default function Header() {
     navigate("/list");
   };
 
-  const isActiveInput = location.pathname === "/input" || location.pathname === "/";
+  const isActiveInput = location.pathname === "/input" || location.pathname === "/chess";
   const isActiveList = location.pathname === "/list";
 
   return (
     <div className={styles.container}>
       <div className={styles.innerContainer}>
-        <img src={Logo} width={200} height={65} alt="체스몽" style={{ cursor: "pointer" }} />
+        <img
+          onClick={handleLogoClick}
+          src={Logo}
+          width={200}
+          height={65}
+          alt="체스몽"
+          style={{ cursor: "pointer" }}
+        />
         <div className={styles.navContainer}>
           <button
             className={`${styles.navItem} ${isActiveInput ? styles.active : ""}`}

@@ -12,7 +12,7 @@ export default function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<ChessPage />} />
+          <Route path="/chess" element={<ChessPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/input" element={<InputPage />} />
           <Route path="/list" element={<ListPage />} />

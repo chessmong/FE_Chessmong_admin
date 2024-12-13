@@ -26,7 +26,7 @@ export default function Input() {
 
   const handleClick = () => {
     if (inputValue) {
-      navigate("/");
+      navigate("/chess");
     }
   };
 
