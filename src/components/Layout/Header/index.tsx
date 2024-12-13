@@ -18,7 +18,7 @@ export default function Header() {
     navigate("/list");
   };
 
-  const isActiveInput = location.pathname === "/input" || location.pathname === "/chess";
+  const isActiveInput = location.pathname === "/" || location.pathname === "/chess";
   const isActiveList = location.pathname === "/list";
 
   return (
