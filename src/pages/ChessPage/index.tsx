@@ -4,10 +4,12 @@ import Button from "../../components/Button";
 import { positionsState } from "../../states/positionsState";
 import { useRecoilState } from "recoil";
 import styles from "./ChessPage.module.scss";
+import { useNavigate } from "react-router-dom";
 
 export default function ChessPage() {
   const [savedPositions, setSavedPositions] = useRecoilState(positionsState);
   const [currentFen, setCurrentFen] = useState("");
+  const navigate = useNavigate();
 
   const savePosition = (position: string) => {
     setSavedPositions((prev) => [position, ...prev]);
@@ -15,6 +17,7 @@ export default function ChessPage() {
 
   const handleSubmit = () => {
     alert("제출했습니다.........ㅋ");
+    navigate("/input");
   };
 
   return (
