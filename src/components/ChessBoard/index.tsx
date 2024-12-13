@@ -20,7 +20,7 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
 
   useEffect(() => {
     onFenChange(chess.fen());
-  }, [chess.fen(), onFenChange]);
+  }, [chess.fen(), onFenChange, chess]);
 
   const changeTurn = () => {
     setTurnColor(turnColor === "white" ? "black" : "white");
@@ -116,7 +116,7 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [history, chess.fen()]);
+  }, [history, chess.fen(), savePosition, undoMove]);
 
   return (
     <div className={styles.container}>
