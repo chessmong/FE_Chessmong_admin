@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { chessState } from "../../states/chessState";
 import { positionsState } from "../../states/positionsState";
@@ -18,16 +18,18 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
   const [history, setHistory] = useState<string[]>([chess.fen()]);
   const positions = useRecoilValue(positionsState);
 
+  const fen = chess.fen();
+
   useEffect(() => {
-    onFenChange(chess.fen());
-  }, [chess.fen(), onFenChange, chess]);
+    onFenChange(fen);
+  }, [fen, onFenChange]);
 
-  const changeTurn = () => {
+  const changeTurn = useCallback(() => {
     setTurnColor(turnColor === "white" ? "black" : "white");
-  };
+  }, [turnColor]);
 
-  const savePosition = () => {
-    const currentFen = chess.fen();
+  const savePosition = useCallback(() => {
+    const currentFen = fen;
 
     if (positions.length === 0) {
       onSavePosition(currentFen);
@@ -39,16 +41,16 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
     } else {
       alert("이미 저장된 상태입니다!");
     }
-  };
+  }, [fen, positions, onSavePosition]);
 
-  const undoMove = () => {
+  const undoMove = useCallback(() => {
     if (history.length > 1) {
       const lastFen = history[history.length - 2];
       const newChess = new Chess(lastFen);
       setChess(newChess);
       setHistory(history.slice(0, -1));
     }
-  };
+  }, [history, setChess]);
 
   const toDests = (chessInstance: typeof chess) => {
     const dests = new Map();
@@ -64,7 +66,7 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
   };
 
   const config = {
-    fen: chess.fen(),
+    fen: fen,
     orientation: turnColor,
     turnColor: turnColor,
     highlight: {
@@ -116,12 +118,12 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [history, chess.fen(), savePosition, undoMove]);
+  }, [savePosition, undoMove]);
 
   return (
     <div className={styles.container}>
       <div className={styles.chessContainer}>
-        <Chessground key={chess.fen()} config={config} contained={true} />
+        <Chessground key={fen} config={config} contained={true} />
       </div>
       <div className={styles.buttons}>
         <div onClick={changeTurn} role="button" tabIndex={0}>
