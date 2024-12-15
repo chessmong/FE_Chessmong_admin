@@ -20,6 +20,10 @@ export default function ChessPage() {
     setSavedPositions((prev) => [position, ...prev]);
   };
 
+  const deletePosition = (index: number) => {
+    setSavedPositions((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = () => {
     mutate(
       { link: url, positions: savedPositions },
@@ -56,6 +60,14 @@ export default function ChessPage() {
                   }`}
                 >
                   <p className={styles.positionText}>{position}</p>
+                  <button className={styles.deleteButton} onClick={() => deletePosition(index)}>
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/128/11600/11600230.png"
+                      width={15}
+                      height={15}
+                      alt="삭제 버튼"
+                    />
+                  </button>
                 </div>
               ))}
             </div>
