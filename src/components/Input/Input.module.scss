@@ -3,20 +3,39 @@
   align-items: center;
   gap: 15px;
 
-  .inputContainer {
-    width: 500px;
-    height: 50px;
+  .inputErrorContainer {
+    display: flex;
+    flex-direction: column;
 
-    .input {
-      width: 100%;
-      height: 100%;
-      background-color: #fff;
-      border-radius: 5px;
-      padding: 0 15px;
-      outline: none;
-      border: none;
-      font-size: 22px;
-      transition: border-color 0.3s;
+    .inputContainer {
+      width: 500px;
+      height: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .input {
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 0 15px;
+        outline: none;
+        border: none;
+        font-size: 20px;
+        transition: border-color 0.3s;
+      }
+
+      .errorInput {
+        border: 1px solid rgb(194, 33, 33);
+      }
+    }
+
+    .errorText {
+      color: rgb(194, 33, 33);
+      font-size: 14px;
+      position: absolute;
+      bottom: -25px;
     }
   }
 }
