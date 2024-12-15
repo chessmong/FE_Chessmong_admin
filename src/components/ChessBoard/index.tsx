@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react"; // useMemo를 추가
 import { useRecoilState } from "recoil";
 import { chessState } from "../../states/chessState";
 import { positionsState } from "../../states/positionsState";
@@ -15,7 +15,7 @@ import Spinner from "../../components/Layout/Spinner";
 import styles from "./ChessBoard.module.scss";
 
 export default function ChessBoard() {
-  const initialChess = new Chess();
+  const initialChess = useMemo(() => new Chess(), []);
   const [chess, setChess] = useRecoilState(chessState);
   const [savedPositions, setSavedPositions] = useRecoilState(positionsState);
   const [turnColor, setTurnColor] = useState<"white" | "black">("white");
