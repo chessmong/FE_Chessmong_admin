@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ChessBoard from "../../components/ChessBoard";
 import Button from "../../components/Button";
 import { positionsState } from "../../states/positionsState";
@@ -23,6 +23,24 @@ export default function ChessPage() {
   const deletePosition = (index: number) => {
     setSavedPositions((prev) => prev.filter((_, i) => i !== index));
   };
+
+  const deleteMostRecentPosition = () => {
+    setSavedPositions((prev) => prev.slice(1));
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "d") {
+      event.preventDefault();
+      deleteMostRecentPosition();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const handleSubmit = () => {
     mutate(
