@@ -6,7 +6,6 @@ import "./global.css";
 import Layout from "./components/Layout";
 import ChessPage from "./pages/ChessPage";
 import AuthPage from "./pages/AuthPage";
-import ListPage from "./pages/ListPage";
 import InputPage from "./pages/InputPage";
 
 export default function App() {
@@ -24,7 +23,6 @@ export default function App() {
             path="/chess"
             element={auth.isLoggedIn ? <ChessPage /> : <Navigate to="/auth" />}
           />
-          <Route path="/list" element={auth.isLoggedIn ? <ListPage /> : <Navigate to="/auth" />} />
         </Routes>
       </Layout>
     </Router>
