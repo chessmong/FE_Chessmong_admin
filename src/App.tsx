@@ -10,7 +10,7 @@ import ListPage from "./pages/ListPage";
 import InputPage from "./pages/InputPage";
 
 export default function App() {
-  const isAuthenticated = useRecoilValue(authState);
+  const auth = useRecoilValue(authState);
 
   return (
     <Router>
@@ -19,12 +19,12 @@ export default function App() {
           {/* 인증이 필요 없는 페이지 */}
           <Route path="/auth" element={<AuthPage />} />
           {/* 인증이 필요한 페이지 */}
-          <Route path="/" element={isAuthenticated ? <InputPage /> : <Navigate to="/auth" />} />
+          <Route path="/" element={auth.isLoggedIn ? <InputPage /> : <Navigate to="/auth" />} />
           <Route
             path="/chess"
-            element={isAuthenticated ? <ChessPage /> : <Navigate to="/auth" />}
+            element={auth.isLoggedIn ? <ChessPage /> : <Navigate to="/auth" />}
           />
-          <Route path="/list" element={isAuthenticated ? <ListPage /> : <Navigate to="/auth" />} />
+          <Route path="/list" element={auth.isLoggedIn ? <ListPage /> : <Navigate to="/auth" />} />
         </Routes>
       </Layout>
     </Router>

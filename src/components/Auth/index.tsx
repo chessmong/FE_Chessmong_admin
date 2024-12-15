@@ -11,7 +11,7 @@ export default function Auth() {
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
   const { mutate, isLoading } = useAuthenticate();
-  const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState);
+  const [auth, setAuth] = useRecoilState(authState);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -26,8 +26,13 @@ export default function Auth() {
 
   const handleClick = () => {
     mutate(inputValue, {
-      onSuccess: () => {
-        setIsAuthenticated(true);
+      onSuccess: (response) => {
+        const token = response.accessToken;
+        setAuth({
+          accessToken: token,
+          isLoggedIn: true,
+        });
+        localStorage.setItem("accessToken", token);
         navigate("/");
       },
       onError: () => {
@@ -37,10 +42,10 @@ export default function Auth() {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (auth.isLoggedIn) {
       navigate("/");
     }
-  }, [isAuthenticated, navigate]);
+  }, [auth.isLoggedIn, navigate]);
 
   return (
     <div className={styles.container}>
