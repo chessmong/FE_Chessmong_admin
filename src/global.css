@@ -8,5 +8,8 @@
 
 body {
   background-color: hsl(37, 7%, 14%);
+}
+
+* {
   font-family: "Pretendard-Regular", sans-serif;
 }
