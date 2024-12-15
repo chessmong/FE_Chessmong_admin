@@ -10,16 +10,7 @@ export default function Header() {
     navigate("/");
   };
 
-  const handleInputClick = () => {
-    navigate("/input");
-  };
-
-  const handleListClick = () => {
-    navigate("/list");
-  };
-
-  const isActiveInput = location.pathname === "/" || location.pathname === "/chess";
-  const isActiveList = location.pathname === "/list";
+  const isActiveInput = location.pathname === "/list";
 
   return (
     <div className={styles.container}>
@@ -33,17 +24,8 @@ export default function Header() {
           style={{ cursor: "pointer" }}
         />
         <div className={styles.navContainer}>
-          <button
-            className={`${styles.navItem} ${isActiveInput ? styles.active : ""}`}
-            onClick={handleInputClick}
-          >
-            강의 등록
-          </button>
-          <button
-            className={`${styles.navItem} ${isActiveList ? styles.active : ""}`}
-            onClick={handleListClick}
-          >
-            강의 검색
+          <button className={`${styles.navItem} ${isActiveInput ? styles.active : ""}`}>
+            강의 목록
           </button>
         </div>
       </div>
