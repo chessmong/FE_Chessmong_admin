@@ -28,7 +28,7 @@ jobs:
       # Upload a file to AWS s3
       - name: Deploy
         run: |
-          aws s3 cp dist/ s3://${{secrets.BUCKET_NAME}}/ --recursive
+          aws s3 cp build/ s3://${{secrets.BUCKET_NAME}}/ --recursive
       # Invalidate CloudFront cache
       - name: Invalidate CloudFront cache
         run: |
