@@ -1,4 +1,4 @@
-import ChessBoard from "../../components/ChessBoard";
+import ChessBoard from "../components/ChessBoard";
 
 export default function ChessPage() {
   return <ChessBoard />;
