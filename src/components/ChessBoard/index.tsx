@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useState, useEffect, useCallback } from "react";
+import { useRecoilState } from "recoil";
 import { chessState } from "../../states/chessState";
 import { positionsState } from "../../states/positionsState";
 import Chessground from "@react-chess/chessground";
@@ -9,20 +9,27 @@ import "../../assets/chessground.cburnett.css";
 import { Chess, SQUARES, Square } from "chess.js";
 import { Key } from "chessground/types";
 import Button from "../Button";
-import { ChessBoardProps } from "./ChessBoard.types";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAddLecture } from "../../apis/post/postAddLecture";
+import Spinner from "../../components/Layout/Spinner";
 import styles from "./ChessBoard.module.scss";
 
-export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardProps) {
+export default function ChessBoard() {
   const [chess, setChess] = useRecoilState(chessState);
+  const [savedPositions, setSavedPositions] = useRecoilState(positionsState);
   const [turnColor, setTurnColor] = useState<"white" | "black">("white");
   const [history, setHistory] = useState<string[]>([chess.fen()]);
-  const positions = useRecoilValue(positionsState);
+  const [currentFen, setCurrentFen] = useState(chess.fen());
+  const navigate = useNavigate();
+  const { mutate, isLoading } = useAddLecture();
+  const location = useLocation();
+  const { url } = location.state || {};
 
   const fen = chess.fen();
 
   useEffect(() => {
-    onFenChange(fen);
-  }, [fen, onFenChange]);
+    setCurrentFen(fen);
+  }, [fen]);
 
   const changeTurn = useCallback(() => {
     setTurnColor(turnColor === "white" ? "black" : "white");
@@ -31,17 +38,20 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
   const savePosition = useCallback(() => {
     const currentFen = fen;
 
-    if (positions.length === 0) {
-      onSavePosition(currentFen);
-      return;
-    }
-
-    if (!positions.includes(currentFen)) {
-      onSavePosition(currentFen);
+    if (savedPositions.length === 0 || !savedPositions.includes(currentFen)) {
+      setSavedPositions((prev) => [currentFen, ...prev]);
     } else {
       alert("이미 저장된 상태입니다!");
     }
-  }, [fen, positions, onSavePosition]);
+  }, [fen, savedPositions, setSavedPositions]);
+
+  const deleteMostRecentPosition = useCallback(() => {
+    setSavedPositions((prev) => prev.slice(1));
+  }, [setSavedPositions]);
+
+  const deletePosition = (index: number) => {
+    setSavedPositions((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const undoMove = useCallback(() => {
     if (history.length > 1) {
@@ -110,6 +120,9 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
       } else if ((event.ctrlKey || event.metaKey) && event.key === "z") {
         event.preventDefault();
         undoMove();
+      } else if (event.key === "Delete") {
+        event.preventDefault();
+        deleteMostRecentPosition();
       }
     };
 
@@ -118,20 +131,72 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [savePosition, undoMove]);
+  }, [savePosition, undoMove, deleteMostRecentPosition]);
+
+  const handleSubmit = () => {
+    mutate(
+      { link: url, positions: savedPositions },
+      {
+        onSuccess: () => {
+          setSavedPositions([]);
+          navigate("/");
+        },
+        onError: () => {
+          alert("강의 등록에 실패했습니다. 다시 시도해 주세요.");
+        },
+      }
+    );
+  };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className={styles.container}>
-      <div className={styles.chessContainer}>
-        <Chessground key={fen} config={config} contained={true} />
-      </div>
-      <div className={styles.buttons}>
-        <div onClick={changeTurn} role="button" tabIndex={0}>
-          <Button onClick={undoMove}>흑백전환</Button>
-        </div>
-        <Button onClick={savePosition}>상태저장</Button>
-        <Button onClick={undoMove}>되돌리기</Button>
-      </div>
+      <section className={styles.sectionContainer}>
+        <section className={styles.section}>
+          <div className={styles.chessContainer}>
+            <Chessground key={fen} config={config} contained={true} />
+          </div>
+          <div className={styles.buttons}>
+            <div onClick={changeTurn} role="button" tabIndex={0}>
+              <Button onClick={undoMove}>흑백전환</Button>
+            </div>
+            <Button onClick={savePosition}>상태저장</Button>
+            <Button onClick={undoMove}>되돌리기</Button>
+          </div>
+        </section>
+        <section className={styles.section}>
+          <div className={styles.positionBg}>
+            <div className={styles.positionContainer}>
+              {savedPositions.map((position, index) => (
+                <div
+                  key={index}
+                  className={`${styles.positionItem} ${
+                    position === currentFen ? styles.highlighted : ""
+                  }`}
+                >
+                  <p className={styles.positionText}>{position}</p>
+                  <button className={styles.deleteButton} onClick={() => deletePosition(index)}>
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/128/11600/11600230.png"
+                      width={15}
+                      height={15}
+                      alt="삭제 버튼"
+                    />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className={styles.buttons}>
+            <Button onClick={handleSubmit} disabled={savedPositions.length === 0 || isLoading}>
+              제출
+            </Button>
+          </div>
+        </section>
+      </section>
     </div>
   );
 }
