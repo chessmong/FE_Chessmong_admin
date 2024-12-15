@@ -25,6 +25,7 @@ export default function ChessPage() {
       { link: url, positions: savedPositions },
       {
         onSuccess: () => {
+          setSavedPositions([]);
           navigate("/");
         },
         onError: () => {

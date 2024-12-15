@@ -43,7 +43,7 @@ export default function Header() {
             className={`${styles.navItem} ${isActiveList ? styles.active : ""}`}
             onClick={handleListClick}
           >
-            등록한 강의
+            강의 검색
           </button>
         </div>
       </div>
