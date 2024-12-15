@@ -15,21 +15,34 @@ import Spinner from "../../components/Layout/Spinner";
 import styles from "./ChessBoard.module.scss";
 
 export default function ChessBoard() {
+  const initialChess = new Chess();
   const [chess, setChess] = useRecoilState(chessState);
   const [savedPositions, setSavedPositions] = useRecoilState(positionsState);
   const [turnColor, setTurnColor] = useState<"white" | "black">("white");
-  const [history, setHistory] = useState<string[]>([chess.fen()]);
-  const [currentFen, setCurrentFen] = useState(chess.fen());
+  const [history, setHistory] = useState<string[]>([initialChess.fen()]);
+  const [currentFen, setCurrentFen] = useState(initialChess.fen());
   const navigate = useNavigate();
   const { mutate, isLoading } = useAddLecture();
   const location = useLocation();
+  const fen = chess.fen();
   const { url } = location.state || {};
 
-  const fen = chess.fen();
+  useEffect(() => {
+    if (!url) {
+      navigate("/");
+    }
+  }, [url, navigate]);
 
   useEffect(() => {
     setCurrentFen(fen);
   }, [fen]);
+
+  useEffect(() => {
+    setChess(new Chess());
+    setSavedPositions([]);
+    setHistory([initialChess.fen()]);
+    setTurnColor("white");
+  }, []);
 
   const changeTurn = useCallback(() => {
     setTurnColor(turnColor === "white" ? "black" : "white");
@@ -139,6 +152,9 @@ export default function ChessBoard() {
       {
         onSuccess: () => {
           setSavedPositions([]);
+          setChess(new Chess());
+          setHistory([initialChess.fen()]);
+          setTurnColor("white");
           navigate("/");
         },
         onError: () => {
