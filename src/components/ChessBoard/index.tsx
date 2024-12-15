@@ -104,10 +104,10 @@ export default function ChessBoard({ onSavePosition, onFenChange }: ChessBoardPr
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.key === "s") {
+      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
         event.preventDefault();
         savePosition();
-      } else if (event.ctrlKey && event.key === "z") {
+      } else if ((event.ctrlKey || event.metaKey) && event.key === "z") {
         event.preventDefault();
         undoMove();
       }
