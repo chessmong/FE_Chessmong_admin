@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react"; // useMemo를 추가
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { chessState } from "../../states/chessState";
 import { positionsState } from "../../states/positionsState";
