@@ -28,19 +28,18 @@ export default function ChessPage() {
     setSavedPositions((prev) => prev.slice(1));
   };
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Delete") {
-      event.preventDefault();
-      deleteMostRecentPosition();
-    }
-  };
-
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Delete") {
+        deleteMostRecentPosition();
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [deleteMostRecentPosition]);
 
   const handleSubmit = () => {
     mutate(
