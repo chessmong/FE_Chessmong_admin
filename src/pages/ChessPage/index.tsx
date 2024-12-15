@@ -4,21 +4,39 @@ import Button from "../../components/Button";
 import { positionsState } from "../../states/positionsState";
 import { useRecoilState } from "recoil";
 import styles from "./ChessPage.module.scss";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAddLecture } from "../../apis/post/postAddLecture";
+import Spinner from "../../components/Layout/Spinner";
 
 export default function ChessPage() {
   const [savedPositions, setSavedPositions] = useRecoilState(positionsState);
   const [currentFen, setCurrentFen] = useState("");
   const navigate = useNavigate();
+  const { mutate, isLoading } = useAddLecture();
+  const location = useLocation();
+  const { url } = location.state || {};
 
   const savePosition = (position: string) => {
     setSavedPositions((prev) => [position, ...prev]);
   };
 
   const handleSubmit = () => {
-    alert("제출했습니다.........ㅋ");
-    navigate("/input");
+    mutate(
+      { link: url, positions: savedPositions },
+      {
+        onSuccess: () => {
+          navigate("/");
+        },
+        onError: () => {
+          alert("강의 등록에 실패했습니다. 다시 시도해 주세요.");
+        },
+      }
+    );
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className={styles.container}>
@@ -42,7 +60,9 @@ export default function ChessPage() {
             </div>
           </div>
           <div className={styles.buttonContainer}>
-            <Button onClick={handleSubmit}>제출</Button>
+            <Button onClick={handleSubmit} disabled={savedPositions.length === 0 || isLoading}>
+              제출
+            </Button>
           </div>
         </section>
       </section>
