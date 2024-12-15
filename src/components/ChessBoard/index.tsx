@@ -42,7 +42,7 @@ export default function ChessBoard() {
     setSavedPositions([]);
     setHistory([initialChess.fen()]);
     setTurnColor("white");
-  }, []);
+  }, [initialChess, setChess, setSavedPositions]);
 
   const changeTurn = useCallback(() => {
     setTurnColor(turnColor === "white" ? "black" : "white");
