@@ -29,7 +29,7 @@ export default function ChessPage() {
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if ((event.ctrlKey || event.metaKey) && event.key === "d") {
+    if (event.key === "Delete") {
       event.preventDefault();
       deleteMostRecentPosition();
     }
