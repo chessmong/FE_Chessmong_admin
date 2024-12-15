@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import styles from "./Auth.module.scss";
+import { useAuthenticate } from "../../apis/post/postAuthenticate";
+import { useRecoilState } from "recoil";
+import { authState } from "../../states/authState";
 
 export default function Auth() {
   const [inputValue, setInputValue] = useState("");
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
-
-  const code = "CODE";
+  const { mutate, isLoading } = useAuthenticate();
+  const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -18,24 +20,27 @@ export default function Auth() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      if (inputValue === code) {
-        setIsButtonEnabled(true);
-        setIsError(false);
-        handleClick();
-      } else {
-        setIsError(true);
-        setIsButtonEnabled(false);
-      }
+      handleClick();
     }
   };
 
   const handleClick = () => {
-    if (inputValue === code) {
-      navigate("/");
-    } else {
-      setIsError(true);
-    }
+    mutate(inputValue, {
+      onSuccess: () => {
+        setIsAuthenticated(true);
+        navigate("/");
+      },
+      onError: () => {
+        setIsError(true);
+      },
+    });
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className={styles.container}>
@@ -51,8 +56,8 @@ export default function Auth() {
         </div>
         {isError && <p className={styles.errorText}>코드가 일치하지 않습니다.</p>}
       </div>
-      <Button onClick={handleClick} disabled={!isButtonEnabled}>
-        입력
+      <Button onClick={handleClick} disabled={isLoading}>
+        {isLoading ? "확인 중" : "입력"}
       </Button>
     </div>
   );

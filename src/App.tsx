@@ -1,4 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { authState } from "./states/authState";
 import "./reset.css";
 import "./global.css";
 import Layout from "./components/Layout";
@@ -8,14 +10,21 @@ import ListPage from "./pages/ListPage";
 import InputPage from "./pages/InputPage";
 
 export default function App() {
+  const isAuthenticated = useRecoilValue(authState);
+
   return (
     <Router>
       <Layout>
         <Routes>
-          <Route path="/chess" element={<ChessPage />} />
+          {/* 인증이 필요 없는 페이지 */}
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/" element={<InputPage />} />
-          <Route path="/list" element={<ListPage />} />
+          {/* 인증이 필요한 페이지 */}
+          <Route path="/" element={isAuthenticated ? <InputPage /> : <Navigate to="/auth" />} />
+          <Route
+            path="/chess"
+            element={isAuthenticated ? <ChessPage /> : <Navigate to="/auth" />}
+          />
+          <Route path="/list" element={isAuthenticated ? <ListPage /> : <Navigate to="/auth" />} />
         </Routes>
       </Layout>
     </Router>
