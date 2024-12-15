@@ -5,6 +5,7 @@ import styles from "./Auth.module.scss";
 import { useAuthenticate } from "../../apis/post/postAuthenticate";
 import { useRecoilState } from "recoil";
 import { authState } from "../../states/authState";
+import Spinner from "../Layout/Spinner";
 
 export default function Auth() {
   const [inputValue, setInputValue] = useState("");
@@ -47,6 +48,10 @@ export default function Auth() {
     }
   }, [auth.isLoggedIn, navigate]);
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.inputErrorContainer}>
@@ -62,7 +67,7 @@ export default function Auth() {
         {isError && <p className={styles.errorText}>코드가 일치하지 않습니다.</p>}
       </div>
       <Button onClick={handleClick} disabled={isLoading}>
-        {isLoading ? "확인 중" : "입력"}
+        입력
       </Button>
     </div>
   );

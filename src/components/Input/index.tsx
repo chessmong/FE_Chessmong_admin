@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import styles from "./Input.module.scss";
 import { useCheckLecture } from "../../apis/post/postCheckLecture";
+import Spinner from "../Layout/Spinner";
 
 export default function Input() {
   const [inputValue, setInputValue] = useState("");
@@ -59,6 +60,10 @@ export default function Input() {
     });
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.inputErrorContainer}>
@@ -74,7 +79,7 @@ export default function Input() {
         {error && <p className={styles.errorText}>{error}</p>}
       </div>
       <Button onClick={handleClick} disabled={!isButtonEnabled || isLoading}>
-        {isLoading ? "확인 중" : "입력"}
+        입력
       </Button>
     </div>
   );
