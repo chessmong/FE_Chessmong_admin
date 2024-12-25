@@ -13,9 +13,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAddLecture } from "../../apis/post/postAddLecture";
 import Spinner from "../../components/Layout/Spinner";
 import styles from "./ChessBoard.module.scss";
+import changeicon from "../../assets/icons/changeicon.png";
+import backicon from "../../assets/icons/back-icon.png";
+import saveicon from "../../assets/icons/save.png";
+import submiticon from "../../assets/icons/submit.png";
 
 export default function ChessBoard() {
   const initialChess = useMemo(() => new Chess(), []);
+  const [isRotated, setIsRotated] = useState(false);
   const [chess, setChess] = useRecoilState(chessState);
   const [savedPositions, setSavedPositions] = useRecoilState(positionsState);
   const [turnColor, setTurnColor] = useState<"white" | "black">("white");
@@ -46,6 +51,7 @@ export default function ChessBoard() {
 
   const changeTurn = useCallback(() => {
     setTurnColor(turnColor === "white" ? "black" : "white");
+    setIsRotated((prev) => !prev);
   }, [turnColor]);
 
   const savePosition = useCallback(() => {
@@ -176,11 +182,20 @@ export default function ChessBoard() {
             <Chessground key={fen} config={config} contained={true} />
           </div>
           <div className={styles.buttons}>
-            <div onClick={changeTurn} role="button" tabIndex={0}>
-              <Button onClick={undoMove}>흑백전환</Button>
+            <div
+              onClick={changeTurn}
+              className={`${styles.button} ${isRotated && styles.rotated}`}
+              role="button"
+              tabIndex={0}
+            >
+              <img src={changeicon} width={50} alt="흑백전환" />
             </div>
-            <Button onClick={savePosition}>상태저장</Button>
-            <Button onClick={undoMove}>되돌리기</Button>
+            <div onClick={savePosition} className={styles.button} role="button" tabIndex={0}>
+              <img src={saveicon} width={45} alt="상태저장" />
+            </div>
+            <div onClick={undoMove} className={styles.button} role="button" tabIndex={0}>
+              <img src={backicon} width={50} alt="되돌리기" />
+            </div>
           </div>
         </section>
         <section className={styles.section}>
@@ -207,9 +222,9 @@ export default function ChessBoard() {
             </div>
           </div>
           <div className={styles.buttons}>
-            <Button onClick={handleSubmit} disabled={savedPositions.length === 0 || isLoading}>
-              제출
-            </Button>
+            <div onClick={handleSubmit} className={styles.button} role="button" tabIndex={0}>
+              <img src={submiticon} width={50} alt="제출" />
+            </div>
           </div>
         </section>
       </section>

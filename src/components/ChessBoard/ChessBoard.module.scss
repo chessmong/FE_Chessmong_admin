@@ -21,16 +21,14 @@
   .chessContainer {
     width: 600px;
     height: 600px;
-    border: 20px solid #dfc9a6;
-    border-right-color: rgb(172, 157, 135);
-    border-bottom-color: rgb(172, 157, 135);
+    border: 20px solid #d3d5d6;
     border-radius: 5px;
   }
 
   .positionBg {
     width: 450px;
     height: 600px;
-    background-color: #b5aa99;
+    background-color: #e0e5eb;
     border-radius: 5px;
     padding: 20px 10px 20px 20px;
 
@@ -55,12 +53,12 @@
       }
 
       &::-webkit-scrollbar-thumb {
-        background: #8b8070;
+        background: #2a3a47;
         border-radius: 10px;
       }
 
       &::-webkit-scrollbar-thumb:hover {
-        background: #8b8070;
+        background: #375670;
       }
 
       .positionItem {
@@ -82,7 +80,7 @@
       }
 
       .highlighted {
-        color: #ff9900;
+        color: #0099e0;
       }
 
       .positionText {
@@ -98,6 +96,27 @@
 
 .buttons {
   display: flex;
-  gap: 30px;
-  margin-top: 30px;
+  gap: 100px;
+  margin-top: 25px;
+  position: relative;
+
+  .button {
+    cursor: pointer;
+    background-color: #375670;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      background-color: lighten(#375670, 10%);
+    }
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
 }

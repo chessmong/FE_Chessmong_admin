@@ -7,9 +7,9 @@
 }
 
 body {
-  background-color: hsl(37, 7%, 14%);
-}
-
-* {
+  background-color: #2a3a47;
   font-family: "Pretendard-Regular", sans-serif;
+  line-height: 20px;
+  letter-spacing: 0.4px;
+  overflow-x: hidden;
 }
