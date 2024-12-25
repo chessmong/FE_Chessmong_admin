@@ -8,7 +8,6 @@ import "../../assets/chessground.brown.css";
 import "../../assets/chessground.cburnett.css";
 import { Chess, SQUARES, Square } from "chess.js";
 import { Key } from "chessground/types";
-import Button from "../Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAddLecture } from "../../apis/post/postAddLecture";
 import Spinner from "../../components/Layout/Spinner";
